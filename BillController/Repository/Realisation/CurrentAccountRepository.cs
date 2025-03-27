@@ -70,11 +70,7 @@ namespace BillController.Repository.Realisation
             return true;
         }
 
-        public async Task<CurrentAccount?> Get(Guid id)
-        {
-            var result = await EntitySet.Where(e => e.AccountId == id).FirstOrDefaultAsync();
-            
-            return result;
-        }
+        public async Task<CurrentAccount?> Get(Guid id) =>  await EntitySet.Where(e => e.AccountId == id).FirstOrDefaultAsync();
+
     }
 }
