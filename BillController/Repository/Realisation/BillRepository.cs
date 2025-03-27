@@ -62,22 +62,13 @@ namespace BillController.Repository.Realisation
                         .SetProperty(b => b.IsPayed, entity.IsPayed)
                         .SetProperty(c => c.PayedDate, entity.PayedDate)
                 );
-         if (result == 0) return false;
-            return true;
+         return result != 0;
         }
 
-        public async Task<bool> Delete(Bill entity)
+        public async Task<bool> Delete(Guid id)
         {
-            try
-            {
-                await EntitySet.Where(e => e.BillId == entity.BillId).ExecuteDeleteAsync();
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-
-            return true;
+          await  Context.Bills.Where(b => b.BillId == id).ExecuteDeleteAsync();
+          return Context.Bills.Any(e => e.BillId == id);
         }
 
         public Task<Bill?> Get(Guid id)

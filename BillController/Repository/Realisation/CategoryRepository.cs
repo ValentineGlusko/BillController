@@ -101,15 +101,15 @@ namespace BillController.Repository.Realisation
             return true;
         }
 
-        public async Task<bool> Delete(Category entity)
+        public async Task<bool> Delete(Guid id)
         {
             using var scope = Logger.BeginScope("Category:{Category}\nDate:{Date}", $"{ScopeNaming.CommonOperations}", $"{DateTime.Now}");
             try
             {
-                var res =   await EntitySet.Where(e => e.Id == entity.Id).ExecuteDeleteAsync();
+                var res =   await EntitySet.Where(e=> e.Id ==id).ExecuteDeleteAsync();
                 if (res == 1)
                 {
-                    Logger.LogWarning($"Entity with Id {entity.Id} not found in database.");
+                    Logger.LogWarning($"Entity with Id { id} not found in database.");
                     return false;
                 }
             }
@@ -133,7 +133,7 @@ namespace BillController.Repository.Realisation
                     $"{ScopeNaming.NotSuccessfulOperation}"));
                 return false;
             }
-            Logger.LogInformation($"Entity:{nameof(entity)} updated to the database\nDate: {DateTime.Now}");
+            Logger.LogInformation($"Entity id:{id} deleted from the database\nDate: {DateTime.Now}");
             return true;
 
 

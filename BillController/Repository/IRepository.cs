@@ -16,7 +16,7 @@ namespace BillController.Repository
     public DataContext Context { get; }
     public Task<bool> AddAsync(T entity);
     public Task<bool> Update(T entity);
-    public Task<bool> Delete(T entity);
+    public Task<bool> Delete(Guid id);
     public Task<T?> Get(Guid id);
     }
 }

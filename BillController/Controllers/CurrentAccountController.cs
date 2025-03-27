@@ -1,5 +1,5 @@
 ﻿using BillController.Models;
-using BillController.Models.CategoryDto;
+using BillController.Models.Dto.Accounts;
 using BillController.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BillController.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class CurrentAccountController : ControllerBase
     {
         private IRepository<CurrentAccount> _repository;
@@ -48,6 +50,15 @@ namespace BillController.Controllers
          await   _repository.AddAsync(curacc);
          return CreatedAtAction(nameof(GetAccount), new { id = curacc.AccountId }, curacc);
          
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<bool>> Delete(Guid id)
+        {
+            var result = await _repository.Delete(id);
+            if (result) return NoContent();
+            ModelState.AddModelError("Delete", "Impossible to delete Account");
+            return ValidationProblem(ModelState);
         }
     }
 }

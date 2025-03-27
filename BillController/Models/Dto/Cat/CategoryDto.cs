@@ -1,4 +1,4 @@
-﻿namespace BillController.Models.Dbo
+﻿namespace BillController.Models.Dto.Cat
 {
     public class CategoryDto
     {

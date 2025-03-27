@@ -3,11 +3,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using BillController;
+using BillController.AuthenticationConfigs;
 using BillController.Configurations;
 using BillController.Models;
 using BillController.Models.Authentication;
 using BillController.Repository;
 using BillController.Repository.Realisation;
+using BillController.Services.Abstraction;
+using BillController.Services.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
@@ -33,10 +36,10 @@ builder.Services.AddControllers().AddJsonOptions(e=> e.JsonSerializerOptions.Ref
 builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
 builder.Services.AddTransient<ProblemRecorder>();
-
 builder.Services.AddControllers();
-
-
+builder.Services.AddTransient<ITokenService, TokenJwtService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.Configure<TokenSignConfigs>(builder.Configuration.GetSection(TokenSignConfigs.SectionName));
 
 
  

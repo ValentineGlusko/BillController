@@ -4,10 +4,13 @@ using BillController.Repository;
 using BillController.Repository.Realisation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static BillController.Models.CategoryDto.BillDto;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
+using static BillController.Models.Dto.Bill.BillDto;
 
 namespace BillController.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BillController : ControllerBase
@@ -44,7 +47,7 @@ namespace BillController.Controllers
 
             return CreatedAtAction(nameof(GetBill), new { id = created.BillId} , created);
         }
-        [Authorize]
+        
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetBill(Guid id)
         {
@@ -59,8 +62,17 @@ namespace BillController.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var list = _billRepository.Context.Bills;
+            var list = await _billRepository.Context.Bills.ToListAsync();
             return Ok(list);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<bool>> Delete(Guid id)
+        {
+            var pos = await _billRepository.Delete(id);
+            if (pos is true) return NoContent();
+            ModelState.AddModelError("Not Found", "The Bill is not found");
+            return ValidationProblem(ModelState);
         }
 
     }

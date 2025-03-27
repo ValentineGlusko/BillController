@@ -55,11 +55,11 @@ namespace BillController.Repository.Realisation
             return true;
         }
 
-        public async Task<bool> Delete(CurrentAccount entity)
+        public async Task<bool> Delete(Guid id)
         {
             try
             {
-                await EntitySet.Where(e => e.AccountId == entity.AccountId).ExecuteDeleteAsync();
+                await EntitySet.Where(e => e.AccountId == id).ExecuteDeleteAsync();
             }
             catch(Exception e){Logger.Log(LogLevel.Critical, $"Impossible to Delete entity\n {e.StackTrace}");
                 return false;

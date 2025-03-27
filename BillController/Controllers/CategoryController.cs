@@ -1,12 +1,11 @@
 ﻿using BillController.Models;
-using BillController.Models.Dbo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.Reflection.Metadata.Ecma335;
 using BillController.Repository;
-using static BillController.Models.Dbo.CategoryDto;
+using static BillController.Models.Dto.Cat.CategoryDto;
 using BillController.Repository.Realisation;
 
 namespace BillController.Controllers
@@ -31,7 +30,7 @@ namespace BillController.Controllers
             return ValidationProblem(ModelState);
 
         }
-        [HttpGet]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCategory(Guid id)
         {
             var entity = await _repository.Get(id);
@@ -52,7 +51,20 @@ namespace BillController.Controllers
                 .Take(maximumPerPage);
             return  Ok( await list.ToListAsync());   
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Category>>> GetAll()
+        {
+            var list = await _repository.EntitySet.ToListAsync();
+            return Ok(list);
+        }
 
-        
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> DeleteCategory(Guid id)
+        {
+            var res = await _repository.Delete(id);
+            if (res) return NoContent();
+            ModelState.AddModelError(nameof(DeleteCategory), "Impossible to delete");
+            return ValidationProblem(ModelState);
+        }
     }
 }

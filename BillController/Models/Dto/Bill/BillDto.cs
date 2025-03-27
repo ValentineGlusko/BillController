@@ -1,4 +1,4 @@
-﻿namespace BillController.Models.CategoryDto
+﻿namespace BillController.Models.Dto.Bill
 {
     public class BillDto
     {

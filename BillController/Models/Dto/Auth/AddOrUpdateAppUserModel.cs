@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BillController.Models.Authentication
+namespace BillController.Models.Dto.Auth
 {
     public class AddOrUpdateAppUserModel
     {
