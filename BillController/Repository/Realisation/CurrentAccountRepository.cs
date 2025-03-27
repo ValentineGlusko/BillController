@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BillController.Configurations;
 using BillController.Models;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -69,9 +70,11 @@ namespace BillController.Repository.Realisation
             return true;
         }
 
-        public async Task<CurrentAccount> Get(Guid id)
+        public async Task<CurrentAccount?> Get(Guid id)
         {
-            return await EntitySet.Where(e => e.AccountId == id).FirstAsync();
+            var result = await EntitySet.Where(e => e.AccountId == id).FirstOrDefaultAsync();
+            
+            return result;
         }
     }
 }
