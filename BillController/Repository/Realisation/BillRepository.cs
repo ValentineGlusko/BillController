@@ -68,7 +68,8 @@ namespace BillController.Repository.Realisation
         public async Task<bool> Delete(Guid id)
         {
           await  Context.Bills.Where(b => b.BillId == id).ExecuteDeleteAsync();
-          return Context.Bills.Any(e => e.BillId == id);
+          var invert = Context.Bills.Any(e => e.BillId == id);
+            return !invert;
         }
 
         public Task<Bill?> Get(Guid id)
